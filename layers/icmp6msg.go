@@ -255,16 +255,18 @@ func (i *ICMPv6RouterAdvertisement) SerializeTo(b gopacket.SerializeBuffer, opts
 		return err
 	}
 
-	buf, err := b.PrependBytes(12)
+	buf, err := b.PrependBytes(14)
 	if err != nil {
 		return err
 	}
 
-	buf[0] = byte(i.HopLimit)
-	buf[1] = byte(i.Flags)
-	binary.BigEndian.PutUint16(buf[2:], i.RouterLifetime)
-	binary.BigEndian.PutUint32(buf[4:], i.ReachableTime)
-	binary.BigEndian.PutUint32(buf[8:], i.RetransTimer)
+	buf[0] = 134 // Type
+	buf[1] = 0   //code
+	buf[2] = byte(i.HopLimit)
+	buf[3] = byte(i.Flags)
+	binary.BigEndian.PutUint16(buf[4:], i.RouterLifetime)
+	binary.BigEndian.PutUint32(buf[6:], i.ReachableTime)
+	binary.BigEndian.PutUint32(buf[10:], i.RetransTimer)
 	return nil
 }
 
